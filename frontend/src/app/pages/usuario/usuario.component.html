@@ -1,0 +1,48 @@
+
+<div class=" content">
+  <div class=" row">
+    <div class="col-md-12">
+      <div class=" card">
+        <div class=" card-header">
+          <h4 class=" card-title">Lista de Usuários</h4>
+        </div>
+        <div class=" card-body">
+          <div class=" table-responsive">
+            <table class=" table tablesorter" id="">
+              <thead class=" text-primary">
+                <tr>
+                  <th>Nome do Usuário</th>
+                  <th>SobreNome do Usuário</th>
+                  <th>E-mail</th>
+                  <th>Data de Nascimento</th>
+                  <th>Escolaridade</th>
+                  <th class=" text-center">Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let usuarioData of usuarioData">
+                  <td>{{ usuarioData.nome }}</td>
+                  <td>{{ usuarioData.sobreNome }}</td>
+                  <td>{{ usuarioData.email }}</td>
+                  <td>{{ usuarioData.dtNascimento | date: 'dd/MM/yyyy' }}</td>
+                  <td>{{ usuarioData.escolaridade.nivel }}</td>
+                  <td class=" text-center">
+                    <a [routerLink]="['/usuario-editar', usuarioData.idUsuario]">
+                      <i class=" tim-icons icon-pencil" title="editar"> </i>
+                    </a>
+                    |
+                    <a [routerLink]="['/usuario-excluir', usuarioData.idUsuario]">
+                      <i class="tim-icons icon-trash-simple" title="excluir"> </i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+           
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
