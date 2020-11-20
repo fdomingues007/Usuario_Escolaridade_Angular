@@ -1,19 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { Usuario } from 'src/app/model/usuario.model';
 import { UsuarioService } from '../../services/usuario.service';
 import { EscolaridadeService } from '../../services/escolaridade.service';
 import { Escolaridade } from '../../model/escolaridade.model';
 import * as moment from 'moment';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: "app-usuario-editar",
-  templateUrl: "usuario-editar.component.html",
-  styleUrls: ["./usuario-editar.component.css"]
+  selector: "app-usuario-novo",
+  templateUrl: "usuario-novo.component.html",
+  styleUrls: ["./usuario-novo.component.css"]
 })
-export class UsuarioEditarComponent implements OnInit {
+export class UsuarioNovoComponent implements OnInit {
 
   formUsuario: FormGroup;
   form: FormArray;
@@ -24,16 +25,16 @@ export class UsuarioEditarComponent implements OnInit {
   constructor(private _fb: FormBuilder,
     private usuarioService: UsuarioService,
     private activatedRoute: ActivatedRoute,
-    private escolaridadeService: EscolaridadeService
+    private escolaridadeService: EscolaridadeService,
+    private router: Router
   ) {
 
     this.formUsuario = this._fb.group({
-      idUsuario: ['', Validators.required],
-      nome: ['', Validators.required],
-      sobreNome: ['', Validators.required],
-      email: ['', Validators.required],
-      dtNascimento: [''],
-      codEscolaridade: ['']
+      nome: ['Fabio', Validators.required],
+      sobreNome: ['Domingues', Validators.required],
+      email: ['fabio@gmail.com', Validators.required],
+      dtNascimento: ['1976-05-20'],
+      codEscolaridade: ['1']
     });
   }
 
@@ -55,7 +56,7 @@ export class UsuarioEditarComponent implements OnInit {
       nome: model.nome,
       sobreNome: model.sobreNome,
       email: model.email,
-      dtNascimento: moment( model.dtNascimento).format('YYYY-MM-DD'),
+      dtNascimento: moment(model.dtNascimento).format('YYYY-MM-DD'),
       codEscolaridade: model.codEscolaridade
     });
   }
@@ -69,9 +70,20 @@ export class UsuarioEditarComponent implements OnInit {
   }
 
   onSubmit() {
-    this.usuarioService.update(this.formUsuario.value).subscribe((response) => {
-      console.log(response);
+    this.usuarioService.create(this.formUsuario.value).subscribe((response: any) => {
+      if (response.showmessage === true) {
+        this.getMessage(response);
+        this.router.navigate(['usuario']);
+      }
     });
   }
-  
+
+  private getMessage(response: any) {
+    Swal({
+      title: response.message,
+      type: 'success',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
 }

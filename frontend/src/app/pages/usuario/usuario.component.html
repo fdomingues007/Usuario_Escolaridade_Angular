@@ -7,6 +7,11 @@
           <h4 class=" card-title">Lista de Usuários</h4>
         </div>
         <div class=" card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <button (click)="novoUsuario()" class="btn btn-primary">Novo Usuário</button>
+            </div>
+          </div>
           <div class=" table-responsive">
             <table class=" table tablesorter" id="">
               <thead class=" text-primary">
@@ -31,7 +36,7 @@
                       <i class=" tim-icons icon-pencil" title="editar"> </i>
                     </a>
                     |
-                    <a [routerLink]="['/usuario-excluir', usuarioData.idUsuario]">
+                    <a style="color: red;" (click)="openConfirmsSwal(usuarioData.idUsuario)">
                       <i class="tim-icons icon-trash-simple" title="excluir"> </i>
                     </a>
                   </td>
