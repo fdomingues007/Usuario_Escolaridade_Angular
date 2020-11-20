@@ -37,10 +37,10 @@ export class UsuarioService extends BaseRepositoryService<Usuario> {
     return this.httpClient.put<Usuario>(environment.API + `${url}`, model, { headers: headers });
   }
 
-  public delete(model: Usuario): Observable<Usuario> {
+  public delete(id: number): Observable<Usuario> {
     const headers: HttpHeaders = this.getHeaders();
     const url = 'usuarios/v1/delete';
-    return this.httpClient.delete<Usuario>(environment.API + `${url}` + '/' + model, { headers: headers });
+    return this.httpClient.delete<Usuario>(environment.API + `${url}/${id}`, { headers: headers });
   }
 
 }

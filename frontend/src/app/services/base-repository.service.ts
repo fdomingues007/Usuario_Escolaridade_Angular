@@ -35,9 +35,9 @@ export class BaseRepositoryService<T> {
     return this.httpClient.put<T>(environment.API + `${this.url}`, model, { headers: headers });
   }
 
-  public delete(model: T): Observable<T> {
+  public delete(id: any): Observable<T> {
     const headers: HttpHeaders = this.getHeaders();
-    return this.httpClient.delete<T>(environment.API + `${this.url}` + '/' + model, { headers: headers });
+    return this.httpClient.delete<T>(environment.API + `${this.url}` + '/' + id, { headers: headers });
   }
 
   public getHeaders() {
