@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Usuario } from '../../model/usuario.model';
 import { UsuarioService } from '../../services/usuario.service';
 import swal from 'sweetalert2';
+import { MensagemService, SweetAlertType } from '../../services/mensagem.service';
 
 @Component({
   selector: "app-usuario",
@@ -15,7 +16,8 @@ export class UsuarioComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private usuarioService: UsuarioService) { }
+    private usuarioService: UsuarioService,
+    private mensagem: MensagemService) { }
 
   ngOnInit() {
     this.listaUsuarios();
@@ -28,7 +30,7 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
-  novoUsuario(){
+  novoUsuario() {
     this.router.navigate(['usuario-novo']);
   }
 
@@ -50,6 +52,17 @@ export class UsuarioComponent implements OnInit {
   }
 
   delete(item: any) {
-   alert('Fabão');
+    this.usuarioService.delete(item).subscribe((response: any) => {
+      if (response.showmessage === true) {
+        if (response.erro === true) {
+          this.mensagem.simple(response.message, SweetAlertType.error, 4000);
+        }
+        else {
+          this.mensagem.simple(response.message, SweetAlertType.success, 2000);
+          this.listaUsuarios();
+        }
+      }
+    });
   }
 }
+

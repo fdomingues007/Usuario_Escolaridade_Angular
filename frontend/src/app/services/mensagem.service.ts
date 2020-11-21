@@ -9,21 +9,29 @@ export class MensagemService {
 
   constructor() { }
 
-   sucesso(titulo: string, tempo?:number) {
+  simple(titulo: string, tipo: any, tempo: number) {
     Swal({
       title: titulo,
-      type: 'success',
+      type: tipo,
       showConfirmButton: false,
       timer: tempo,
     });
   }
 
-  erro(titulo: string, tempo?:number) {
-    Swal({
-      title: titulo,
-      type: 'error',
-      showConfirmButton: false,
-      timer: tempo,
-    });
-  }
+  // erro(titulo: string, tempo?: number, tipo?: any) {
+  //   Swal({
+  //     title: titulo,
+  //     type: tipo,
+  //     showConfirmButton: false,
+  //     timer: tempo,
+  //   });
+  // }
+}
+
+export enum SweetAlertType {
+  success = 'success',
+  error = 'error',
+  warning = 'warning',
+  info = 'info',
+  question = 'question'
 }

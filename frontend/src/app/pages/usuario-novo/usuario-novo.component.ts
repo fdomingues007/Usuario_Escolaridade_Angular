@@ -8,6 +8,8 @@ import { EscolaridadeService } from '../../services/escolaridade.service';
 import { Escolaridade } from '../../model/escolaridade.model';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { MensagemService, SweetAlertType } from '../../services/mensagem.service';
 
 @Component({
   selector: "app-usuario-novo",
@@ -26,21 +28,20 @@ export class UsuarioNovoComponent implements OnInit {
     private usuarioService: UsuarioService,
     private activatedRoute: ActivatedRoute,
     private escolaridadeService: EscolaridadeService,
-    private router: Router
+    private router: Router,
+    private mensagem: MensagemService
   ) {
 
     this.formUsuario = this._fb.group({
-      nome: ['Fabio', Validators.required],
-      sobreNome: ['Domingues', Validators.required],
-      email: ['fabio@gmail.com', Validators.required],
-      dtNascimento: ['1976-05-20'],
+      nome: ['', Validators.required],
+      sobreNome: [''],
+      email: ['', Validators.required],
+      dtNascimento: [''],
       codEscolaridade: ['1']
     });
   }
 
   ngOnInit() {
-    this.id = this.activatedRoute.snapshot.params['id'];
-    this.getUsuarioById(this.id);
     this.getListaEscolaridade();
   }
 
@@ -71,19 +72,14 @@ export class UsuarioNovoComponent implements OnInit {
 
   onSubmit() {
     this.usuarioService.create(this.formUsuario.value).subscribe((response: any) => {
-      if (response.showmessage === true) {
-        this.getMessage(response);
-        this.router.navigate(['usuario']);
+      if (response.showmessage) {
+        if (response.erro)
+          this.mensagem.simple(response.message,SweetAlertType.error,4000);
+        else {
+          this.mensagem.simple(response.message,SweetAlertType.success,2000);
+          this.router.navigate(['usuario']);
+        }
       }
-    });
-  }
-
-  private getMessage(response: any) {
-    Swal({
-      title: response.message,
-      type: 'success',
-      showConfirmButton: false,
-      timer: 1500
     });
   }
 }
